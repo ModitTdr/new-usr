@@ -1,0 +1,41 @@
+.selectContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.select {
+  border-radius: var(--rounded);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+  height: 40px;
+
+  &--sm {
+    padding: 0 0.8rem;
+  }
+
+  &--md {
+    padding: 0 1.4rem;
+  }
+
+  &--lg {
+    padding: 0 2rem;
+    height: 50px;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &::placeholder {
+    color: var(--text-muted);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
