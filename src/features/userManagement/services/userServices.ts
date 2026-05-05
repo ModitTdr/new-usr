@@ -2,9 +2,23 @@ import type { UserFormValues } from "../schema/formValidation";
 
 const API_URL = import.meta.env.VITE_LOCALSERVER_URL;
 
-export const getUsers = async () => {
+export const getUserById = async (id: string): Promise<UserFormValues | null> => {
   try {
-    const res = await fetch(`${API_URL}/users`);
+    const res = await fetch(`http://localhost:3000/users/${id}`);
+    if (!res.ok) {
+      throw new Error("Failed to fetch users");
+    }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+export const getUsers = async (page = 1, limit = 5) => {
+  try {
+    const res = await fetch(`${API_URL}/users?_page=${page}&_per_page=${limit}`);
     if (!res.ok) {
       throw new Error("Failed to fetch users");
     }
