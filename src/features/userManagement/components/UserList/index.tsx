@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
-import { Eye, MoveRight, Pencil, Trash2 } from "lucide-react";
+import { CircleX, Eye, MoveRight, Pencil, Trash2 } from "lucide-react";
 import { createPortal } from "react-dom";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
@@ -79,7 +79,6 @@ const UserList = () => {
 
 
   const handleDelete = async (user: UserFormValues) => {
-    setDeleteModal(true);
     const prevData = data;
     try {
       await mutate(user.id);
@@ -196,7 +195,13 @@ const UserList = () => {
                       <Button onClick={() => handleEdit(user)} size="icon" variant="ghost">
                         <Pencil size={14} />
                       </Button>
-                      <Button onClick={() => setDeleteModal(true)} size="icon" variant="ghost">
+                      <Button onClick={() => {
+                        setDeleteModal(true);
+                        setUser(user);
+                      }}
+                        size="icon"
+                        variant="ghost"
+                      >
                         <Trash2 size={14} />
                       </Button>
                     </TableCell>
@@ -227,16 +232,19 @@ const UserList = () => {
       }
       {
         deleteModal &&
-        <Modal onClose={() => setUser(null)}>
+        <Modal onClose={() => setDeleteModal(false)}>
           <ModalHeader>
             <ModalTitle>Delete User</ModalTitle>
           </ModalHeader>
           <ModalBody style={{ maxWidth: "400px" }}>
-            Are you sure you want to delete the user {user.firstName + " " + user.lastName}? This action is irreversible
-            and the user will be permanently removed from the system.
-          </ModalBody>``
+            Are you sure you want to delete the user <strong> {user ? `${user.firstName} ${user.lastName}` : ""}?</strong>
+            <br />
+            <div className={styles.modal__alert}>
+              ⚠︎ This action is irreversible and the user will be permanently removed from the system.
+            </div>
+          </ModalBody>
           <ModalFooter>
-            <Button onClick={() => setUser(null)} disabled={isDeleting} variant="ghost">Close</Button>
+            <Button onClick={() => setDeleteModal(false)} disabled={isDeleting} variant="ghost">Close</Button>
             <Button
               onClick={() => {
                 if (!user?.id) return;
