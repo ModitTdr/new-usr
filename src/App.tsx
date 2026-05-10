@@ -1,11 +1,17 @@
-import { Outlet } from "react-router";
-import Navbar from "./components/Navbar";
+import { RouterProvider } from "react-router";
+import router from "./routes/router";
+import { useDispatch } from "react-redux";
+import { restoreSession } from "./features/Authentication/authSlice";
+import { useEffect } from "react";
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(restoreSession());
+  }, []);
   return (
     <main>
-      <Navbar />
-      <Outlet />
+      <RouterProvider router={router} />
     </main>
   )
 }
